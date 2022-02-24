@@ -1,0 +1,7 @@
+{"icbCatalogRepository":[
+    {
+        "providerName": "Azure",
+        "providerCode": "azure",
+        "sourcePath": "/"
+    }
+]}
