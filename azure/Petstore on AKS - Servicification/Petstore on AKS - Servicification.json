@@ -273,7 +273,7 @@
 		"condition": "[and(equals(variables('enableOmsAgent'),'true'),equals(parameters('newLogAnalyticsWorkspaceRequired'),'Yes'))]",
 		"type": "Microsoft.Resources/deployments",
 		"name": "WorkspaceDeployment",
-		"apiVersion": "2017-05-10",
+		"apiVersion": "2019-08-01",
 		"resourceGroup": "[variables('workspaceResourceGroup')]",
 		"subscriptionId": "[variables('workspaceSubscriptionId')]",
 		"properties": {
