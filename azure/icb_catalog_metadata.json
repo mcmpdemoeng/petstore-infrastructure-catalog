@@ -2,6 +2,6 @@
     {
         "providerName": "Azure",
         "providerCode": "azure",
-        "sourcePath": "/"
+        "sourcePath": "/azure"
     }
 ]}
