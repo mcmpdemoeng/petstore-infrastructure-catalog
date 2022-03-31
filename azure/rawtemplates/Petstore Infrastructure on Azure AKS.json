@@ -62,12 +62,14 @@
 			"defaultValue": "Adminazuredb1"
 		},
 		"administratorLoginPassword": {
-			"type": "securestring",
-			"defaultValue": "",
+			"type": "string",
+			"defaultValue": "Passw0rd1",
+			"allowedValues": ["Passw0rd1"],
 			"minLength": 8,
 			"maxLength": 128,
 			"metadata": {
-				"description": "Database administrator password. It must contain characters from three of the following categories - English uppercase letters, English lowercase letters, numbers (0-9), and non-alphanumeric characters (!, $, #, %, etc.). It must be between 8 & 128 characters."
+				"description": "Database administrator password. It must contain characters from three of the following categories - English uppercase letters, English lowercase letters, numbers (0-9), and non-alphanumeric characters (!, $, #, %, etc.). It must be between 8 & 128 characters.",
+				"pattern": "((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])|(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^A-Za-z0-9])|(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])).{8,}"
 			}
 		},
 		"serverName": {
