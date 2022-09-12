@@ -30,7 +30,7 @@
 			"metadata": {
 				"description": "Kubernetes cluster version. Default is set to 1.21.9"
 			},
-			"defaultValue": "1.21.9"
+			"defaultValue": "1.22.6"
 		},
 		"dnsNamePrefix": {
 			"type": "string",
