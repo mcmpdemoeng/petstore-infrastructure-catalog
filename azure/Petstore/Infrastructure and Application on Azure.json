@@ -79,23 +79,31 @@
 			},
 			"defaultValue": "petstorAKSDB"
 		},
+		
+		     "CreateSnowAlerts": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "create azure alerts that send data to snow"
+            },
+		
         "snowScriptUrl": {
             "type": "string",
-            "defaultValue": "Admin",
+            "defaultValue": "[if(parameters('CreateSnowAlerts'), 'https://example.service-now.com', 'No need to specify')]",
             "metadata": {
                 "description": "Your snow instance URL"
             }
         },
         "snowUser": {
             "type": "string",
-            "defaultValue": "youruser@gmail.com",
+            "defaultValue": "[if(parameters('CreateSnowAlerts'), 'userexample@gmail.com', 'No need to specify')]",
             "metadata": {
                 "description": "Your snow user"
             }
         },
         "snowPassword": {
             "type": "string",
-            "defaultValue": "Admin",
+            "defaultValue": "[if(parameters('CreateSnowAlerts'), 'p4ssw0rdExample', 'No need to specify')]",
             "metadata": {
                 "description": "Your snow user's password"
             }
@@ -234,6 +242,7 @@
 	},
 	"resources": [
         {
+		"condition": "[(parameters('CreateSnowAlerts')]",
             "type": "microsoft.insights/actionGroups",
             "apiVersion": "2022-06-01",
             "name": "[variables('AGName')]",
@@ -423,39 +432,9 @@
 			"project": "[parameters('projectTag')]"
 		}
 	},
+   
     {
-        "type": "microsoft.insights/activityLogAlerts",
-        "apiVersion": "2020-10-01",
-        "name": "[variables('healthAlertName')]",
-        "location": "Global",
-        "dependsOn": [
-            "[resourceId('microsoft.insights/actionGroups', variables('AGName'))]"
-        ],
-        "properties": {
-            "scopes": [
-                "/subscriptions/149f0952-6f3d-48ba-9e98-57011575cbbd"
-            ],
-            "condition": {
-                "allOf": [
-                    {
-                        "field": "category",
-                        "equals": "ServiceHealth"
-                    }
-                ]
-            },
-            "actions": {
-                "actionGroups": [
-                    {
-                        "actionGroupId": "[resourceId('microsoft.insights/actionGroups', variables('AGName'))]",
-                        "webhookProperties": {}
-                    }
-                ]
-            },
-            "enabled": true
-        }
-    },
-
-    {
+	    "condition": "[(parameters('CreateSnowAlerts')]",
         "type": "microsoft.insights/metricAlerts",
         "apiVersion": "2018-03-01",
         "name": "[variables('alertName')]",
