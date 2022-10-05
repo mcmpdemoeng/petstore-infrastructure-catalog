@@ -85,7 +85,7 @@
             "defaultValue": true,
             "metadata": {
                 "description": "create azure alerts that send data to snow"
-            },
+            }},
 		
         "snowScriptUrl": {
             "type": "string",
@@ -489,4 +489,4 @@
 		}
 	}
 }
-}
+
