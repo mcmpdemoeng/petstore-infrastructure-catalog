@@ -82,28 +82,28 @@
 		
         "snowScriptUrl": {
             "type": "string",
-            "defaultValue": "",
+            "defaultValue": "null",
             "metadata": {
-                "description": "Your snow instance URL, leave it in blank if dont want to create snow incidents"
+                "description": "Your snow instance URL, leave it in 'null' if dont want to create snow incidents"
             }
         },
         "snowUser": {
             "type": "string",
-            "defaultValue": "",
+            "defaultValue": "null",
             "metadata": {
-                "description": "Your snow user, leave it in blank if dont want to create snow incidents"
+                "description": "Your snow user, leave it in 'null' if dont want to create snow incidents"
             }
         },
         "snowPassword": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "Your snow user's password, leave it in blank if dont want to create snow incidents"
+                "description": "Your snow user's password, leave it in 'null' if dont want to create snow incidents"
             }
         }
 	},
 	"variables": {
-		"CreateSnowAlerts":"[if(equals(parameters('snowScriptUrl') , '' ) , true, false )]",
+		"CreateSnowAlerts":"[if(equals(parameters('snowScriptUrl') , 'null' ) , true, false )]",
 		"snowBaseUrl": "[concat(split(parameters('snowScriptUrl'), '.service-now.com' )[0], '.service-now' )]",
         "alertName" : "RT High CPU Alert",
         "healthAlertName" : "RTHealth",
