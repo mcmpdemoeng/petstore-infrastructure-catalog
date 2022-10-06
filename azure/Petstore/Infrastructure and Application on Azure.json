@@ -104,7 +104,7 @@
 	},
 	"variables": {
 		"CreateSnowAlerts":"[if( equals( parameters('snowScriptUrl') , 'null' ) , bool('false'), bool('true') )]",
-		"snowBaseUrl": "[concat(split(parameters('snowScriptUrl'), '.service-now.com' )[0], '.service-now' )]",
+		"snowBaseUrl": "[concat(split(parameters('snowScriptUrl'), '.service-now.com' )[0], '.service-now.com' )]",
         "alertName" : "RT High CPU Alert",
         "healthAlertName" : "RTHealth",
 		"AGName" : "ActionGroupRT",
@@ -483,4 +483,3 @@
 		}
 	}
 }
-
