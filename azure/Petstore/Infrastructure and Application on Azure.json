@@ -96,7 +96,7 @@
         },
         "snowPassword": {
             "type": "string",
-            "defaultValue": "",
+            "defaultValue": "null",
             "metadata": {
                 "description": "Your snow user's password, leave it in 'null' if dont want to create snow incidents"
             }
