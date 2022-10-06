@@ -236,7 +236,7 @@
 	},
 	"resources": [
         {
-		"condition": "[(variables('CreateSnowAlerts')]",
+		"condition": "[variables('CreateSnowAlerts')]",
             "type": "microsoft.insights/actionGroups",
             "apiVersion": "2022-06-01",
             "name": "[variables('AGName')]",
@@ -428,7 +428,7 @@
 	},
    
     {
-	    "condition": "[(variables('CreateSnowAlerts')]",
+	    "condition": "[variables('CreateSnowAlerts')]",
         "type": "microsoft.insights/metricAlerts",
         "apiVersion": "2018-03-01",
         "name": "[variables('alertName')]",
