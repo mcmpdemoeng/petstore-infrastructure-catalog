@@ -80,36 +80,30 @@
 			"defaultValue": "petstorAKSDB"
 		},
 		
-		     "CreateSnowAlerts": {
-            "type": "bool",
-            "defaultValue": true,
-            "metadata": {
-                "description": "create azure alerts that send data to snow"
-            }},
-		
         "snowScriptUrl": {
             "type": "string",
-            "defaultValue": "[if(parameters('CreateSnowAlerts'), 'https://example.service-now.com', 'No need to specify')]",
+            "defaultValue": "",
             "metadata": {
-                "description": "Your snow instance URL"
+                "description": "Your snow instance URL, leave it in blank if dont want to create snow incidents"
             }
         },
         "snowUser": {
             "type": "string",
-            "defaultValue": "[if(parameters('CreateSnowAlerts'), 'userexample@gmail.com', 'No need to specify')]",
+            "defaultValue": "",
             "metadata": {
-                "description": "Your snow user"
+                "description": "Your snow user, leave it in blank if dont want to create snow incidents"
             }
         },
         "snowPassword": {
             "type": "string",
-            "defaultValue": "[if(parameters('CreateSnowAlerts'), 'p4ssw0rdExample', 'No need to specify')]",
+            "defaultValue": "",
             "metadata": {
-                "description": "Your snow user's password"
+                "description": "Your snow user's password, leave it in blank if dont want to create snow incidents"
             }
         }
 	},
 	"variables": {
+		"CreateSnowAlerts":"[if(equals(parameters('snowScriptUrl') , '' ) , true, false )]",
 		"snowBaseUrl": "[concat(split(parameters('snowScriptUrl'), '.service-now.com' )[0], '.service-now' )]",
         "alertName" : "RT High CPU Alert",
         "healthAlertName" : "RTHealth",
@@ -242,7 +236,7 @@
 	},
 	"resources": [
         {
-		"condition": "[(parameters('CreateSnowAlerts')]",
+		"condition": "[(variables('CreateSnowAlerts')]",
             "type": "microsoft.insights/actionGroups",
             "apiVersion": "2022-06-01",
             "name": "[variables('AGName')]",
@@ -434,7 +428,7 @@
 	},
    
     {
-	    "condition": "[(parameters('CreateSnowAlerts')]",
+	    "condition": "[(variables('CreateSnowAlerts')]",
         "type": "microsoft.insights/metricAlerts",
         "apiVersion": "2018-03-01",
         "name": "[variables('alertName')]",
