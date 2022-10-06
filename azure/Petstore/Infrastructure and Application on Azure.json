@@ -107,7 +107,7 @@
 		"snowBaseUrl": "[concat(split(parameters('snowScriptUrl'), '.service-now.com' )[0], '.service-now.com' )]",
                 "alertName" : "RT High CPU Alert",
                 "healthAlertName" : "RTHealth",
-		"DatabaseName":"[concat(parameters('serverName'), base64(utcNow('u')) )]",
+		"DatabaseName":"[concat( parameters('serverName'), uniqueString(subscription().subscriptionId) )]",
 		"AGName" : "ActionGroupRT",
 		"kubernetesClusterName": "[parameters('kubernetesClusterName')]",
 		"resourceLocation": "[resourceGroup().location]",
