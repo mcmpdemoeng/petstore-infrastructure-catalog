@@ -28,9 +28,9 @@
 		"kubernetesVersion": {
 			"type": "string",
 			"metadata": {
-				"description": "Kubernetes cluster version. Default is set to 1.23.12"
+				"description": "Kubernetes cluster version. Default is set to 1.21.9"
 			},
-			"defaultValue": "1.23.12"
+			"defaultValue": "1.22.6"
 		},
 		"dnsNamePrefix": {
 			"type": "string",
@@ -78,38 +78,9 @@
 				"description": "Server Name for MySQL.The server name must be between 3-63 characters. It must only contain lowercase letters, numbers, hyphens and must not start & end with a hyphen."
 			},
 			"defaultValue": "petstorAKSDB"
-		},
-		
-        "snowScriptUrl": {
-            "type": "string",
-            "defaultValue": "null",
-            "metadata": {
-                "description": "Your snow instance URL, leave it in 'null' if dont want to create snow incidents"
-            }
-        },
-        "snowUser": {
-            "type": "string",
-            "defaultValue": "null",
-            "metadata": {
-                "description": "Your snow user, leave it in 'null' if dont want to create snow incidents"
-            }
-        },
-        "snowPassword": {
-            "type": "string",
-            "defaultValue": "null",
-            "metadata": {
-                "description": "Your snow user's password, leave it in 'null' if dont want to create snow incidents"
-            }
-        }
+		}
 	},
 	"variables": {
-		"CreateSnowAlerts":"[if( equals( parameters('snowScriptUrl') , 'null' ) , bool('false'), bool('true') )]",
-		"snowBaseUrl": "[concat(split(parameters('snowScriptUrl'), '.service-now.com' )[0], '.service-now.com' )]",
-                "alertName" : "RT High CPU Alert",
-                "healthAlertName" : "RTHealth",
-		"DatabaseName":"[concat( parameters('serverName'), uniqueString(subscription().subscriptionId) )]",
-		"AGName" : "ActionGroupRT",
-		"kubernetesClusterName": "[parameters('kubernetesClusterName')]",
 		"resourceLocation": "[resourceGroup().location]",
 		"workspaceRegion": "[resourceGroup().location]",
 		"skuFamily": "Gen5",
@@ -236,36 +207,7 @@
 		"subnet": "[variables('subnetArray2')]"
 	},
 	"resources": [
-        {
-		"condition": "[variables('CreateSnowAlerts')]",
-            "type": "microsoft.insights/actionGroups",
-            "apiVersion": "2022-06-01",
-            "name": "[variables('AGName')]",
-            "location": "Global",
-            "properties": {
-                "groupShortName": "snowincident",
-                "enabled": true,
-                "emailReceivers": [],
-                "smsReceivers": [],
-                "webhookReceivers": [
-                    {
-                        "name": "postincident",
-                        "serviceUri": "[ format('{0}?baseurl={1}&user={2}&password={3}', parameters('snowScriptUrl'), variables('snowBaseUrl'), parameters('snowUser'), parameters('snowPassword') ) ]",
-                        "useCommonAlertSchema": true,
-                        "useAadAuth": false
-                    }
-                ],
-                "eventHubReceivers": [],
-                "itsmReceivers": [],
-                "azureAppPushReceivers": [],
-                "automationRunbookReceivers": [],
-                "voiceReceivers": [],
-                "logicAppReceivers": [],
-                "azureFunctionReceivers": [],
-                "armRoleReceivers": []
-            }
-        }
-        ,{
+	{
 		"apiVersion": "2020-03-01",
 		"type": "Microsoft.ContainerService/managedClusters",
 		"location": "[variables('resourceLocation')]",
@@ -399,7 +341,7 @@
 		"apiVersion": "2017-12-01-preview",
 		"kind": "",
 		"location": "[variables('resourceLocation')]",
-		"name": "[variables('DatabaseName')]",
+		"name": "[parameters('serverName')]",
 		"properties": "[variables('properties')]",
 		"sku": {
 			"name": "[variables('skuName')]",
@@ -416,8 +358,8 @@
 	}, {
 		"type": "Microsoft.DBforMySQL/servers/firewallRules",
 		"apiVersion": "2017-12-01",
-		"name": "[concat(variables('DatabaseName'), '/AllowAllWindowsAzureIps')]",
-		"dependsOn": ["[resourceId('Microsoft.DBforMySQL/servers', variables('DatabaseName'))]"],
+		"name": "[concat(parameters('serverName'), '/AllowAllWindowsAzureIps')]",
+		"dependsOn": ["[resourceId('Microsoft.DBforMySQL/servers', parameters('serverName'))]"],
 		"properties": {
 			"startIpAddress": "0.0.0.0",
 			"endIpAddress": "0.0.0.0"
@@ -426,57 +368,7 @@
 			"application": "[parameters('applicationTag')]",
 			"project": "[parameters('projectTag')]"
 		}
-	},
-   
-    {
-	    "condition": "[variables('CreateSnowAlerts')]",
-        "type": "microsoft.insights/metricAlerts",
-        "apiVersion": "2018-03-01",
-        "name": "[variables('alertName')]",
-        "location": "global",
-        "dependsOn": [
-            "[resourceId('microsoft.insights/actionGroups', variables('AGName'))]",
-			"[resourceId('Microsoft.ContainerService/managedClusters', parameters('kubernetesClusterName') )]"
-
-        ],
-        "properties": {
-            "description": "CPU over 5%",
-            "severity": 2,
-            "enabled": true,
-            "scopes": [
-                "[resourceId('Microsoft.ContainerService/managedClusters', parameters('kubernetesClusterName') )]"
-            ],
-            "evaluationFrequency": "PT1M",
-            "windowSize": "PT5M",
-            "criteria": {
-                "allOf": [
-                    {
-                        "threshold": 5,
-                        "name": "Metric1",
-                        "metricNamespace": "Microsoft.ContainerService/managedClusters",
-                        "metricName": "node_cpu_usage_percentage",
-                        "operator": "GreaterThan",
-                        "timeAggregation": "Average",
-                        "criterionType": "StaticThresholdCriterion"
-                    }
-                ],
-                "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
-            },
-            "autoMitigate": true,
-            "targetResourceType": "Microsoft.ContainerService/managedClusters",
-            "targetResourceRegion": "[variables('resourceLocation')]",
-            "actions": [
-                {
-                    "actionGroupId": "[resourceId('microsoft.insights/actionGroups', variables('AGName'))]",
-                    "webHookProperties": {}
-                }
-            ]
-        }
-    }
-    
-
-
-],
+	}],
 	"outputs": {
 		"controlPlaneFQDN": {
 			"type": "string",
