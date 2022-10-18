@@ -27,9 +27,6 @@ variable project_tag {
     }
 }
 
-variable workspace_name {
-  type = string
-}
 
 variable "resource_group_name" {
     type = string
@@ -39,9 +36,7 @@ variable "resource_group_location" {
   type = string
 }
 
-variable subscription_id {
-  type = string
-}
+
 
 resource "azurerm_kubernetes_cluster" "kubernetes" {
 
@@ -52,9 +47,6 @@ resource "azurerm_kubernetes_cluster" "kubernetes" {
   kubernetes_version  = var.kubernetes_version
   http_application_routing_enabled = true
 
-  oms_agent {
-    log_analytics_workspace_id = "/subscriptions/${var.subscription_id}/resourceGroups/${var.resource_group_name}/providers/Microsoft.OperationalInsights/workspaces/${var.workspace_name}"
-  }
 
   default_node_pool {
     name       = "agentpool"
