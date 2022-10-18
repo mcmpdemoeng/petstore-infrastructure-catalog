@@ -24,7 +24,9 @@ resource "azurerm_monitor_metric_alert" "example" {
   resource_group_name  = var.resource_group_name
   scopes               = [ var.ClusterId ]
   description         = "Action will be triggered when Transactions count is greater than 50."
-
+  frequency           = "PT1H"
+  window_size         = "PT1H"
+  
   criteria {
     metric_namespace = "Microsoft.ContainerService/managedClusters"
     metric_name      = "node_cpu_usage_percentage"
