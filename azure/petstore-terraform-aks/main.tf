@@ -32,7 +32,6 @@ module "cluster" {
   project_tag = var.project_tag
   resource_group_location = var.resource_group_location
   resource_group_name = var.resource_group_name
-  subscription_id = data.azurerm_client_config.current.subscription_id
   workspace_name = var.workspace_name
   kubernetes_cluster_name = var.kubernetes_cluster_name
   depends_on = [
