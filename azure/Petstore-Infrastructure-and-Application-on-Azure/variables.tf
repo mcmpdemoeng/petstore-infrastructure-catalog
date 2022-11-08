@@ -78,7 +78,7 @@ variable kubernetes_cluster_name {
 }
 variable snowScriptUrl {
     type = string
-    default = "https://example.service-now.com/api/azurehealth"
+    default = "https://example.service-now.com/api/ibmgs/azurehealth"
     description = "The complete snow url that points to the snow script api that converts azure alert schema to snow incidents"
 }
 variable snowUser {
