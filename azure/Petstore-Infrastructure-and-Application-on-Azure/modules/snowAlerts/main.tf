@@ -26,6 +26,7 @@ resource "azurerm_monitor_metric_alert" "example" {
   description         = "Action will be triggered when Transactions count is greater than 50."
   frequency           = "PT1H"
   window_size         = "PT1H"
+  auto_mitigate       = false
   
   criteria {
     metric_namespace = "Microsoft.ContainerService/managedClusters"
