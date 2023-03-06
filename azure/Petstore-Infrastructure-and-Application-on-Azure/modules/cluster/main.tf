@@ -50,7 +50,7 @@ resource "azurerm_kubernetes_cluster" "kubernetes" {
 
   default_node_pool {
     name       = "agentpool"
-    node_count = 1
+    node_count = 2
     vm_size    = "Standard_D2_v2"
     os_disk_size_gb = 30
     type = "AvailabilitySet"
