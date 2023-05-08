@@ -5,7 +5,7 @@
             "providerCode": "azure",
             "discoverContent": true,
             "enableVersion": true,
-            "sourcePath": "./Petstore-Infrastructure-and-Application-Azure-Terraform",
+            "sourcePath": "/",
             "serviceOfferings": []
         }
     ]
