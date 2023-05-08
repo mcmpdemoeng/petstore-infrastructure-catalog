@@ -72,7 +72,7 @@ output "kube_config" {
 }
 
 output "fqdn" {
-  value = azurerm_kubernetes_cluster.kubernetes.fqdn
+  value = azurerm_kubernetes_cluster.kubernetes.http_application_routing_zone_name
 }
 
 output "cluster_id" {
@@ -81,3 +81,9 @@ output "cluster_id" {
 output "ID" {
   value = azurerm_kubernetes_cluster.kubernetes.id
 }
+
+
+output "application_url" {
+  value = "http://jpetstore-web.${azurerm_kubernetes_cluster.kubernetes.http_application_routing_zone_name}" 
+}
+

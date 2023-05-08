@@ -19,3 +19,7 @@ output "db_password" {
 output "db_url" {
   value = module.mysql.url
 }
+
+output "application_url" {
+  value = "http://jpetstore-web.${module.cluster.fqdn}" 
+}
